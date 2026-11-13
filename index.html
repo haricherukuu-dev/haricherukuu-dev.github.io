@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hari Cheruku, AI tinkerer</title>
+<meta name="description" content="Hari Cheruku builds games, shows and tools with AI, without writing code. This is his workbench.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marigold:#FFC81F; --cobalt:#2437FF; --pink:#FF4FA3; --mint:#5FE3B5; --paper:#FFFDF5; --ink:#14123A; --night:#0D0B2B;
+  --bg:var(--marigold); --fg:var(--ink); --card:var(--paper); --card-fg:var(--ink); --line:var(--ink);
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --hand:"Caveat","Bradley Hand",cursive;
+}
+[data-theme="night"]{ --bg:#14123A; --fg:#FFFDF5; --card:#221F5C; --card-fg:#FFFDF5; --line:#FFC81F; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);font-size:1.125rem;line-height:1.5;transition:background .5s,color .5s;overflow-x:hidden;padding-bottom:3rem}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--pink);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.25rem}
+h1,h2,h3{font-weight:800;line-height:.95;margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(2.2rem,6vw,4.2rem);max-width:16ch}
+p{margin:0;max-width:62ch}
+.hand{font-family:var(--hand);font-size:1.6rem;line-height:1.1}
+svg{display:block}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 0;gap:1rem}
+.name{font-weight:800;font-size:1.15rem;text-decoration:none}
+.lamp{font:inherit;font-weight:600;font-size:1rem;cursor:pointer;background:var(--card);color:var(--card-fg);border:3px solid var(--line);border-radius:999px;padding:.5rem 1rem;box-shadow:4px 4px 0 var(--line);transition:transform .15s,box-shadow .15s}
+.lamp:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}
+.lamp:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--line)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:2rem;align-items:stretch;padding:1.5rem 0 3.5rem}
+.hero h1{font-size:clamp(3rem,9.5vw,7.4rem)}
+.hero h1 span{display:inline-block;transform-origin:50% 100%;animation:drop .7s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(var(--i)*70ms)}
+@keyframes drop{from{transform:translateY(-60px) rotate(var(--r,8deg));opacity:0}to{transform:none;opacity:1}}
+.hero .intro{margin-top:1.6rem;font-size:1.25rem}
+.clock{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.6rem;background:var(--ink);color:var(--marigold);font-weight:800;font-size:1.5rem;padding:.35rem .9rem;border-radius:12px;transform:rotate(-3deg);border:3px solid var(--line)}
+.clock i{font-style:normal;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.clock small{font-family:var(--hand);font-size:1.3rem;font-weight:600;color:var(--paper)}
+.bench{position:relative;min-height:460px;background:var(--cobalt);border:4px solid var(--line);border-radius:28px;box-shadow:10px 10px 0 var(--line);overflow:hidden;touch-action:none}
+.bench .note{position:absolute;left:1rem;bottom:.8rem;right:1rem;color:var(--paper);pointer-events:none;display:flex;justify-content:space-between;align-items:end;gap:1rem}
+.chip{position:absolute;left:0;top:0;user-select:none;cursor:grab;font-weight:800;font-size:1.05rem;white-space:nowrap;padding:.55rem 1rem;border:3px solid var(--ink);border-radius:999px;color:var(--ink);box-shadow:3px 3px 0 var(--ink);will-change:transform}
+.chip:active{cursor:grabbing}
+.chip:nth-child(4n+1){background:var(--marigold)}.chip:nth-child(4n+2){background:var(--pink)}.chip:nth-child(4n+3){background:var(--mint)}.chip:nth-child(4n){background:var(--paper)}
+.bench.still{display:flex;flex-wrap:wrap;gap:.7rem;align-content:flex-start;padding:1.2rem}
+.bench.still .chip{position:static}
+
+/* ticker */
+.ticker{background:var(--ink);color:var(--marigold);border-block:4px solid var(--line);transform:rotate(-1.5deg) scale(1.03);overflow:hidden;white-space:nowrap;font-weight:800;font-size:clamp(1.6rem,4vw,2.6rem);padding:.5rem 0}
+.ticker div{display:inline-block;animation:slide 26s linear infinite}
+.ticker b{color:var(--pink);margin:0 1.2rem}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* bands */
+section{padding:4.5rem 0}
+.band-night{background:var(--night);color:var(--paper)}
+.band-pink{background:var(--pink);color:var(--ink)}
+.band-cobalt{background:var(--cobalt);color:var(--paper)}
+.band-paper{background:var(--paper);color:var(--ink)}
+[data-theme="night"] .band-paper{background:#221F5C;color:var(--paper)}
+.lede{margin-top:1rem;font-size:1.2rem}
+
+/* the rooftop run */
+.run-head{display:flex;justify-content:space-between;align-items:end;gap:1.5rem;flex-wrap:wrap}
+.scene{position:relative;height:300px;margin-top:2rem;border:4px solid var(--marigold);border-radius:28px;overflow:hidden;cursor:pointer;background:linear-gradient(#14123A 0%,#2437FF 100%);user-select:none;touch-action:manipulation}
+.scene .moon{position:absolute;right:9%;top:22px;width:54px;height:54px;border-radius:50%;background:var(--marigold);box-shadow:0 0 40px rgba(255,200,31,.6)}
+.scene .sky{position:absolute;left:0;bottom:74px;width:200%;height:150px;animation:slide 40s linear infinite;animation-play-state:paused}
+.scene.playing .sky,.scene.playing .cars{animation-play-state:running}
+.scene .roof{position:absolute;left:0;right:0;bottom:30px;height:44px;background:var(--paper);border-top:5px solid var(--ink);background-image:repeating-linear-gradient(90deg,transparent 0 118px,var(--ink) 118px 122px)}
+.scene .cars{position:absolute;left:0;bottom:0;height:30px;width:200%;background:#0D0B2B;animation:slide 9s linear infinite;animation-play-state:paused;background-image:repeating-linear-gradient(90deg,transparent 0 14px,var(--pink) 14px 54px,transparent 54px 70px,var(--marigold) 70px 104px,transparent 104px 120px,var(--mint) 120px 164px,transparent 164px 180px);background-size:180px 16px;background-repeat:repeat-x;background-position:0 8px}
+.runner{position:absolute;left:60px;bottom:74px;width:74px;will-change:transform}
+.tank{position:absolute;bottom:74px;left:0;width:38px;background:var(--ink);border:3px solid var(--marigold);border-radius:8px 8px 3px 3px;will-change:transform}
+.tank::after{content:"";position:absolute;left:5px;right:5px;top:8px;height:4px;background:var(--marigold);border-radius:2px}
+.hud{position:absolute;left:1rem;top:.8rem;font-weight:800;font-size:1.3rem;color:var(--paper)}
+.msg{position:absolute;inset:0 0 110px 0;display:grid;place-items:center;text-align:center;padding:0 1rem;color:var(--paper);pointer-events:none}
+.legA,.legB,.armA{transform-box:fill-box;transform-origin:50% 0}
+.legA{animation:swing .32s ease-in-out infinite alternate}
+.legB{animation:swing .32s ease-in-out infinite alternate-reverse}
+.armA{animation:swing .32s ease-in-out infinite alternate-reverse}
+@keyframes swing{from{transform:rotate(-34deg)}to{transform:rotate(34deg)}}
+.steam{animation:steam 1.4s ease-in-out infinite}
+@keyframes steam{50%{transform:translateY(-4px);opacity:.4}}
+
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.4rem;align-items:start}
+.proj{background:var(--card);color:var(--card-fg);border:4px solid var(--line);border-radius:22px;box-shadow:8px 8px 0 var(--line);overflow:hidden;transform:rotate(var(--tilt,0deg));transition:transform .25s cubic-bezier(.2,1.6,.4,1)}
+.proj:hover,.proj:focus-within{transform:rotate(0) translateY(-6px)}
+.art{height:150px;background:var(--c);border-bottom:4px solid var(--line);display:grid;place-items:center;overflow:hidden}
+.art svg{height:128px;width:auto;transition:transform .3s cubic-bezier(.2,1.6,.4,1)}
+.proj:hover .art svg{transform:scale(1.12) rotate(-4deg)}
+.pbody{padding:1.2rem 1.3rem 1.4rem}
+.tag{display:inline-block;font-weight:600;font-size:.95rem;padding:.15rem .7rem;border-radius:999px;border:2px solid var(--ink);color:var(--ink);background:var(--c)}
+.proj h3{font-size:1.9rem;margin:.8rem 0 .6rem}
+.proj p{font-size:1.05rem}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.more>div{overflow:hidden}
+.proj.open .more{grid-template-rows:1fr}
+.proj dl{margin:1rem 0 0;font-size:1rem}
+.proj dt{font-weight:800;margin-top:.6rem}
+.proj dd{margin:0}
+.proj button,.btn{font:inherit;font-weight:800;font-size:1rem;cursor:pointer;margin-top:1rem;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:.55rem 1.1rem;text-decoration:none;display:inline-block}
+[data-theme="night"] .proj button{background:var(--marigold);color:var(--ink)}
+.proj a.link{display:block;margin:.8rem 0 0;font-weight:800}
+.wag{transform-box:fill-box;transform-origin:100% 100%;animation:wag .5s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-14deg)}to{transform:rotate(18deg)}}
+.dot{animation:bob .9s ease-in-out infinite}.dot:nth-of-type(2){animation-delay:.15s}.dot:nth-of-type(3){animation-delay:.3s}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.spin{transform-box:fill-box;transform-origin:50% 50%;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flick .5s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scaleY(1.18) skewX(4deg)}}
+.clapper{transform-box:fill-box;transform-origin:0 100%;transition:transform .15s}
+.proj:hover .clapper{transform:rotate(-24deg)}
+.stamp{transform-box:fill-box;transform-origin:50% 50%;animation:stamp 2.4s ease-in-out infinite}
+@keyframes stamp{0%,70%,100%{transform:rotate(-14deg) scale(1)}80%{transform:rotate(-14deg) scale(1.35)}}
+
+/* what-ifs */
+.ifs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.4rem}
+.flip{perspective:1400px;background:none;border:0;padding:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer;display:block;width:100%}
+.flip .in{display:grid;height:100%;transition:transform .6s cubic-bezier(.3,1.3,.5,1);transform-style:preserve-3d}
+.flip[aria-expanded="true"] .in{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:4px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:1.3rem 1.4rem;min-height:270px;display:flex;flex-direction:column;justify-content:space-between;gap:1rem}
+.front{background:var(--c)}
+.front strong{font-size:clamp(1.7rem,2.6vw,2.2rem);line-height:1;font-weight:800;letter-spacing:-.02em}
+.front .hand{display:flex;justify-content:space-between;align-items:end;gap:1rem}
+.back{background:var(--paper);transform:rotateY(180deg);justify-content:flex-start;font-size:1rem}
+.back b{display:block;font-weight:800;margin-bottom:.15rem}
+.flip:hover .front{background-image:radial-gradient(circle at 85% 15%,rgba(255,255,255,.55) 0 18%,transparent 19%)}
+.band-mint{background:var(--mint);color:var(--ink)}
+
+/* method */
+.steps{list-style:none;padding:0;margin:2.4rem 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;counter-reset:s}
+.steps li{counter-increment:s;background:var(--paper);color:var(--ink);border:4px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:1.2rem 1.3rem 1.4rem}
+.steps li:nth-child(2){transform:translateY(1.6rem) rotate(1deg)}.steps li:nth-child(1){transform:rotate(-1deg)}
+.steps li::before{content:counter(s);font-weight:800;font-size:5rem;line-height:.9;display:block;color:var(--cobalt)}
+.steps h3{font-size:1.6rem;margin:.4rem 0}
+
+/* log */
+.log{margin-top:2rem;border:4px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--paper);color:var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.log .row{display:grid;grid-template-columns:1.1fr 1.6fr 1.6fr auto;gap:1rem;padding:1rem 1.2rem;border-top:3px solid var(--ink);align-items:center}
+.log .row:first-child{border-top:0}
+.log .row:hover{background:var(--marigold)}
+.log b{font-weight:800}
+.verdict{font-weight:800;padding:.15rem .7rem;border-radius:999px;border:2px solid var(--ink);color:var(--ink);background:var(--mint);white-space:nowrap}
+.verdict.hype{background:var(--pink)}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.4rem}
+.why div{border-left:6px solid var(--marigold);padding-left:1rem}
+.why h3{font-size:1.5rem;margin-bottom:.5rem}
+
+/* footer */
+footer{padding:4.5rem 0 4rem}
+footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
+.contacts{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem;align-items:center}
+.contacts .btn{font-size:1.15rem;padding:.8rem 1.4rem;margin:0}
+[data-theme="night"] .contacts .btn{background:var(--marigold);color:var(--ink)}
+
+/* scroll road */
+.road{position:fixed;left:0;right:0;bottom:0;height:12px;background:var(--ink);border-top:3px solid var(--line);z-index:5}
+.road i{position:absolute;left:0;top:0;bottom:0;background:var(--pink);width:0}
+.road .mini{position:absolute;bottom:6px;left:0;width:34px;transform:translateX(-50%)}
+.road .goal{position:absolute;right:4px;bottom:9px;width:30px}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}.bench{min-height:340px}
+  .grid,.steps,.why,.ifs{grid-template-columns:1fr}
+  .proj,.steps li:nth-child(n){transform:none}
+  .log .row{grid-template-columns:1fr}
+  .scene{height:260px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="name" href="#top">Hari Cheruku</a>
+    <button class="lamp" id="lamp" aria-pressed="false">Switch to 2 AM mode</button>
+  </header>
+  <div class="hero" id="top">
+    <div>
+      <h1 id="headline">New AI tool dropped. I'm already poking it.</h1>
+      <p class="intro">I'm Hari. I sell AI programs at Outskill by day and build things with AI the rest of the time. I don't write code. I ship anyway.</p>
+      <div class="clock" aria-label="The clock is stuck at 2 AM">02<i>:</i>00 AM <small>still testing</small></div>
+    </div>
+    <div class="bench" id="bench" aria-label="Tools I have put to work. Drag and throw them.">
+      <div class="note"><span class="hand">Go on, throw them around.<br>Every one of these has done real work for me.</span><span class="hand" id="flings" aria-live="polite"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+<main>
+  <section class="band-night" id="run">
+    <div class="wrap">
+      <div class="run-head">
+        <div>
+          <h2>Meet Bablu. His biryani is getting cold.</h2>
+          <p class="lede">He's the hero of Chalo Upar, the game I'm building. This is a ten-second taste of it; the real game is bigger.</p>
+        </div>
+        <span class="hand" id="best"></span>
+      </div>
+      <div class="scene" id="scene" tabindex="0" role="button" aria-label="Mini game. Press space or tap to make Bablu jump over the water tanks.">
+        <div class="moon"></div>
+        <div class="sky" id="sky"></div>
+        <div class="roof"></div>
+        <div class="cars"></div>
+        <div class="runner" id="runner"></div>
+        <div class="hud" id="hud"></div>
+        <div class="msg"><span class="hand" id="msg">Tap, or press space, to make Bablu jump.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="built">
+    <div class="wrap">
+      <h2>Things I built without writing the code myself</h2>
+      <p class="lede">Sales videos, a game, a sitcom, two series and an office tool. Open any of them to see what went into it.</p>
+      <div class="grid" id="projects"></div>
+    </div>
+  </section>
+
+  <section class="band-paper" id="ifs">
+    <div class="wrap">
+      <h2>Late-night what-ifs I went and tried</h2>
+      <p class="lede">Each one started as a thought I couldn't leave alone. Flip a card to see what I did about it.</p>
+      <div class="ifs" id="ifgrid"></div>
+    </div>
+  </section>
+
+  <section class="band-pink" id="method">
+    <div class="wrap">
+      <h2>How I turn a launch into something people can use</h2>
+      <p class="lede">The same three moves every time I explain a new tool to someone who isn't an engineer.</p>
+      <ol class="steps">
+        <li><h3>What happened</h3><p>The launch in plain words. No benchmarks unless they change what you can do on Monday.</p></li>
+        <li><h3>Why it matters</h3><p>Who it helps and how: a sales rep, an ops lead, a shop owner, someone switching careers.</p></li>
+        <li><h3>One thing to try this week</h3><p>A single task you can copy. If I couldn't get it working myself, it doesn't go in.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band-mint" id="log" hidden>
+    <div class="wrap">
+      <h2>Lab log</h2>
+      <p class="lede">GitHub repos I ran, the real task I gave each one, and what I found out.</p>
+      <div class="log" id="logrows"></div>
+    </div>
+  </section>
+
+  <section class="band-cobalt" id="why">
+    <div class="wrap">
+      <h2>Why I'd be good at tinkering for a living</h2>
+      <div class="why">
+        <div><h3>I hear the questions first</h3><p>Every day I'm on calls with professionals in India, the US and Canada who want to use AI. I know what confuses them, and what makes them say "wait, it can do that?"</p></div>
+        <div><h3>I am the audience</h3><p>I'm not an engineer. If I can get a tool to do something useful, the people watching can too. If I can't, that's worth saying out loud.</p></div>
+        <div><h3>I finish things</h3><p>Everything on this page started as a late-night "what if" and ended as something another person could play, watch or use.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h2>Give me the tool nobody has tested yet.</h2>
+    <div class="contacts" id="contacts"><span class="hand">I'm already on the team. Find me on Slack as Hari Cheruku.</span></div>
+  </div>
+</footer>
+
+<div class="road" aria-hidden="true"><i id="roadfill"></i><div class="goal" id="goal"></div><div class="mini" id="mini"></div></div>
+
+<script>
+/* ============ EDIT HERE ============ */
+const CONTACT = {            // leave a value empty to hide that button
+  linkedin: "",              // e.g. "https://www.linkedin.com/in/your-handle"
+  email: "",
+  whatsapp: ""               // digits only with country code, e.g. "919999999999"
+};
+const TOOLS = ["Claude","Google Flow","Gemini Omni Flash","AI voice cloning","Claude Code","HyperFrames","VoiceStudio","Lemo-Opuscar","Cloudflare Pages"];
+const PROJECTS = [
+  {tag:"Sales videos", c:"var(--marigold)", title:"Promo videos for the AI Accelerator", art:"clap",
+   blurb:"Two short videos for Outskill's AI Accelerator: a brochure explainer the sales team could send to leads, and a 75-second promo. Script, voice, animation and music all came from AI.",
+   made:"Claude Code driving GitHub repos: HyperFrames and Lemo-Opuscar for the animation, VoiceStudio for an AI voice that runs free on my Mac.",
+   status:"Shared with the team for feedback. I also wrote a setup guide so colleagues can make their own.",
+   links:[["Watch the 75-second promo","https://growthschoolio.slack.com/files/U0BVCRP44NA/F0C90LWBPEY/aiap_video_2.mp4"],
+          ["Watch the brochure explainer","https://growthschoolio.slack.com/files/U0BVCRP44NA/F0C7FJ8HSSG/aiap_video.mp4"]]},
+  {tag:"Game", c:"var(--pink)", title:"Chalo Upar: Bablu's Biryani Run", art:"bablu",
+   blurb:"Bablu, a 19-year-old delivery boy, runs across the rooftops of a Hyderabad traffic jam. The biryani has to arrive hot.",
+   made:"Claude for the whole build, plus an AI-cloned voice for the Dakhni commentary.",
+   status:"First zone (Hi-Tech City) is playable. Colleagues are play-testing it.", link:"", linkText:"Play it"},
+  {tag:"Sitcom", c:"var(--mint)", title:"Kevin v2.5", art:"kevin",
+   blurb:"A Hinglish sitcom on Instagram about a couple where one partner talks like a chatbot.",
+   made:"AI video for the episodes and a cloned voice for Kevin.",
+   status:"Episodes go out as Reels on @kevin_v2.5.", link:"", linkText:"Watch an episode"},
+  {tag:"Animated series", c:"var(--marigold)", title:"Breath Aware", art:"sheru",
+   blurb:"A 3D-animated animal-safety series for a rescue home in Hyderabad. Episode one, The Chase, runs 50 seconds in Telugu with English subtitles.",
+   made:"Google Flow with Gemini Omni Flash, with saved character references so the kids and the dog look the same in every shot.",
+   status:"Built one clip at a time. When a clip fails I fix the one thing that broke instead of rewriting the prompt.", link:"", linkText:"Watch it"},
+  {tag:"Office tool", c:"var(--mint)", title:"Invoice and PO maker", art:"invoice",
+   blurb:"An offline app for a friend's engineering company that ran on Excel. A purchase order needs only a few inputs and backs up to Google Drive.",
+   made:"Claude, start to finish. I described the paperwork; it wrote the app.",
+   status:"In progress, alongside the company's first website.", link:"", linkText:"See it"},
+  {tag:"Video series", c:"var(--pink)", title:"The Infernal Vault", art:"vault",
+   blurb:"A novel I'm adapting into an eight-episode photoreal AI video series, 90 seconds an episode.",
+   made:"Planned on free tools only, which is its own experiment.",
+   status:"In development, and in conversation with the author.", link:"", linkText:"See it"}
+];
+const EXPERIMENTS = [        // q: the thought, did: what I tried, got: what came of it, tag: "In use" or "In progress"
+  {q:"What if my call list planned my day for me?",
+   did:"Had Claude read every open lead in our CRM and rank them: promised follow-ups at their exact time, then people who stayed for the pitch, then by minutes spent in the workshop.",
+   got:"A call sheet with a one-line opener and the best time window on every lead. I rebuilt it so any teammate can plug in their own leads and target.", tag:"In use"},
+  {q:"What if a missed follow-up was impossible?",
+   did:"Set up a task that runs every evening at 7, pulls the callbacks I promised from the CRM and drops them into my calendar.",
+   got:"My phone buzzes five minutes before each call with the person's name and my last notes. A second task sweeps for leads gone quiet and drafts the nudges.", tag:"In use"},
+  {q:"What if something listened to my sales calls and whispered the next line?",
+   did:"I'm building my own live call copilot. It hears the conversation and suggests how to answer the objection in front of me.",
+   got:"Still on the bench. It isn't finished, and I'd rather show that than hide it.", tag:"In progress"},
+  {q:"What if Claude already knew my repeat jobs?",
+   did:"Packaged the jobs I kept re-explaining into reusable skills: a sales command centre, a video script director, a Reel script writer, a brand-post maker.",
+   got:"A short ask now does what used to need a page of instructions, and the output stays consistent from one day to the next.", tag:"In use"},
+  {q:"What if AI video characters stopped changing faces between shots?",
+   did:"For Breath Aware I saved a reference for each of three kids and a dog, wrote one fixed description of the lane, and generated one clip at a time.",
+   got:"When a clip breaks I change one thing and run it again. Rewriting the whole prompt loses whatever was already working.", tag:"In use"},
+  {q:"What if a portfolio I made once could make the next one?",
+   did:"Built an animated portfolio and a resume for an interior designer, then turned the method into a skill.",
+   got:"The next designer's portfolio starts from a few basic details instead of a blank page.", tag:"In use"}
+];
+const LAB_LOG = [            // add rows and the Lab log section appears
+  {name:"HyperFrames (heygen-com/hyperframes)", task:"Turn a written script into a fully animated 75-second promo.", result:"Rendered the video, subtitles and a poster image. Approve the storyboard before the full render; changes are cheap at that stage.", verdict:"Kept"},
+  {name:"VoiceStudio (debpalash/VoiceStudio)", task:"Get a voiceover without paying for a voice tool.", result:"Runs on an Apple Silicon Mac. Qwen3-TTS gave the emotion, OmniVoice kept one consistent voice. The pitch drifts unless you keep \"deep, low pitch\" in the description.", verdict:"Kept"},
+  {name:"Lemo-Opuscar (lemomo-ai/lemo-opuscar)", task:"Storyboard a promo in one set visual style.", result:"Its Dark Tech Keynote style gave the promo a consistent look from the first frame.", verdict:"Kept"},
+  // {name:"repo or tool", task:"the real task I gave it", result:"what happened", verdict:"Useful"},  // verdict: "Useful" or "Hype"
+];
+
+
+
+/* ============ END EDIT ============ */
+
+const $ = s => document.querySelector(s);
+const el = (t, cls, txt) => { const e = document.createElement(t); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const K = 'stroke="#14123A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"';
+
+/* ---------- drawings ---------- */
+const ART = {
+  bablu: `<svg viewBox="0 0 120 134" aria-hidden="true">
+    <path class="steam" d="M28 40q-5-7 0-13M40 40q-5-7 0-13" fill="none" stroke="#FFFDF5" stroke-width="4" stroke-linecap="round"/>
+    <line class="legB" x1="60" y1="90" x2="60" y2="126" stroke="#14123A" stroke-width="11" stroke-linecap="round"/>
+    <rect x="16" y="46" width="36" height="40" rx="7" fill="#FFC81F" ${K}/>
+    <path d="M24 58h20M24 68h20" ${K} fill="none"/>
+    <line class="legA" x1="64" y1="90" x2="64" y2="126" stroke="#2437FF" stroke-width="11" stroke-linecap="round"/>
+    <rect x="44" y="50" width="36" height="44" rx="13" fill="#FF4FA3" ${K}/>
+    <line class="armA" x1="62" y1="62" x2="62" y2="86" stroke="#B9743F" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="66" cy="30" r="19" fill="#B9743F" ${K}/>
+    <path d="M47 28a19 19 0 0 1 38 0z" fill="#2437FF" ${K}/>
+    <rect x="80" y="23" width="20" height="7" rx="3.5" fill="#2437FF" ${K}/>
+    <circle cx="75" cy="34" r="2.8" fill="#14123A"/>
+    <path d="M70 41q6 5 11 0" fill="none" ${K}/>
+  </svg>`,
+  sheru: `<svg viewBox="0 0 130 112" aria-hidden="true">
+    <path class="wag" d="M30 70q-18-8-12-30" fill="none" stroke="#D9A066" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="60" cy="74" rx="32" ry="25" fill="#D9A066" ${K}/>
+    <rect x="40" y="88" width="12" height="20" rx="6" fill="#D9A066" ${K}/><rect x="72" y="88" width="12" height="20" rx="6" fill="#FFFDF5" ${K}/>
+    <ellipse cx="74" cy="80" rx="12" ry="15" fill="#FFFDF5"/>
+    <path d="M70 26l-6-18 20 9z" fill="#B9743F" ${K}/>
+    <circle cx="88" cy="42" r="22" fill="#D9A066" ${K}/>
+    <ellipse cx="100" cy="50" rx="13" ry="9" fill="#FFFDF5" ${K}/>
+    <circle cx="110" cy="46" r="3.5" fill="#14123A"/><circle cx="90" cy="36" r="3" fill="#14123A"/>
+    <path d="M96 54q5 4 10 0" fill="none" ${K}/>
+    <path d="M70 62q16 10 34 2" fill="none" stroke="#2437FF" stroke-width="6" stroke-linecap="round"/>
+  </svg>`,
+  kevin: `<svg viewBox="0 0 150 120" aria-hidden="true">
+    <circle cx="40" cy="76" r="26" fill="#C98A5A" ${K}/>
+    <path d="M16 70a24 24 0 0 1 48-4q-12-12-48 4z" fill="#14123A"/>
+    <path d="M28 70l10 3M56 70l-8 3" ${K} fill="none"/><circle cx="33" cy="80" r="2.6" fill="#14123A"/><circle cx="50" cy="80" r="2.6" fill="#14123A"/>
+    <path d="M34 92h14" ${K} fill="none"/>
+    <circle cx="108" cy="80" r="26" fill="#E7B58A" ${K}/>
+    <path d="M84 74a24 24 0 0 1 48 0q-24-16-48 0z" fill="#2437FF"/>
+    <rect x="96" y="74" width="9" height="9" rx="2" fill="#14123A"/><rect x="112" y="74" width="9" height="9" rx="2" fill="#14123A"/>
+    <path d="M98 94h20" ${K} fill="none"/>
+    <path d="M82 6h56a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8h-22l-8 10v-10h-26a8 8 0 0 1-8-8V14a8 8 0 0 1 8-8z" fill="#FFFDF5" ${K}/>
+    <circle class="dot" cx="96" cy="24" r="4.5" fill="#14123A"/><circle class="dot" cx="110" cy="24" r="4.5" fill="#14123A"/><circle class="dot" cx="124" cy="24" r="4.5" fill="#14123A"/>
+  </svg>`,
+  clap: `<svg viewBox="0 0 130 116" aria-hidden="true">
+    <rect x="14" y="44" width="102" height="62" rx="8" fill="#FFFDF5" ${K}/>
+    <path d="M56 60v30l26-15z" fill="#FF4FA3" ${K}/>
+    <g class="clapper"><rect x="14" y="22" width="102" height="20" rx="5" fill="#14123A" ${K}/>
+    <path d="M30 24l-8 16M52 24l-8 16M74 24l-8 16M96 24l-8 16" stroke="#FFFDF5" stroke-width="6"/></g>
+  </svg>`,
+  invoice: `<svg viewBox="0 0 120 124" aria-hidden="true">
+    <path d="M22 8h76v104l-12-8-13 8-13-8-13 8-13-8-12 8z" fill="#FFFDF5" ${K} transform="rotate(-5 60 60)"/>
+    <g transform="rotate(-5 60 60)"><path d="M36 30h34M36 46h48M36 60h48M36 74h26" ${K} fill="none"/></g>
+    <g class="stamp"><circle cx="84" cy="84" r="22" fill="#FF4FA3" ${K}/><text x="84" y="92" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="22" fill="#14123A">PO</text></g>
+  </svg>`,
+  vault: `<svg viewBox="0 0 130 124" aria-hidden="true">
+    <path class="flame" d="M22 112q-12-30 6-50 2 16 12 18-4-34 22-52-2 26 14 36 4-12 12-16 22 36 6 64z" fill="#FFC81F" ${K}/>
+    <circle cx="66" cy="76" r="40" fill="#221F5C" ${K}/>
+    <circle cx="66" cy="76" r="28" fill="#2437FF" ${K}/>
+    <g class="spin"><path d="M66 54v44M44 76h44M50 60l32 32M82 60L50 92" ${K} fill="none"/><circle cx="66" cy="76" r="8" fill="#FFC81F" ${K}/></g>
+  </svg>`,
+  charminar: c => `<svg viewBox="0 0 60 60" aria-hidden="true"><g fill="${c}">
+    <rect x="12" y="26" width="36" height="34"/><rect x="6" y="8" width="7" height="52"/><rect x="47" y="8" width="7" height="52"/>
+    <circle cx="9.5" cy="7" r="5"/><circle cx="50.5" cy="7" r="5"/><rect x="20" y="16" width="5" height="12"/><rect x="35" y="16" width="5" height="12"/><circle cx="22.5" cy="15" r="3.5"/><circle cx="37.5" cy="15" r="3.5"/></g>
+    <path d="M22 60V44a8 8 0 0 1 16 0v16z" fill="#FFC81F"/></svg>`
+};
+
+/* headline: one load sequence */
+(() => {
+  const h = $("#headline"), words = h.textContent.split(" ");
+  h.textContent = "";
+  words.forEach((w, i) => { const s = el("span", "", w); s.style.setProperty("--i", i); s.style.setProperty("--r", (i % 2 ? -9 : 9) + "deg"); h.append(s, " "); });
+})();
+
+/* ticker */
+(() => {
+  const words = ["games", "sitcoms", "promo videos", "office tools", "animated series", "voice clones"];
+  const one = words.map(w => w + "<b>✦</b>").join("");
+  $("#tick").innerHTML = one + one + one + one;
+})();
+
+/* 2 AM mode */
+$("#lamp").addEventListener("click", e => {
+  const night = document.documentElement.dataset.theme !== "night";
+  document.documentElement.dataset.theme = night ? "night" : "day";
+  e.currentTarget.textContent = night ? "Back to daylight" : "Switch to 2 AM mode";
+  e.currentTarget.setAttribute("aria-pressed", night);
+});
+
+/* projects */
+PROJECTS.forEach((p, i) => {
+  const a = el("article", "proj");
+  a.style.setProperty("--tilt", [-1.5, 1, -0.5, 1.5, -1, 0.8][i % 6] + "deg");
+  a.style.setProperty("--c", p.c);
+  const art = el("div", "art"); art.innerHTML = ART[p.art] || "";
+  const body = el("div", "pbody"), more = el("div", "more"), inner = el("div"), dl = el("dl");
+  dl.append(el("dt", "", "What went into it"), el("dd", "", p.made), el("dt", "", "Where it stands"), el("dd", "", p.status));
+  inner.append(dl); more.append(inner);
+  const b = el("button", "", "Open it up"); b.setAttribute("aria-expanded", "false");
+  b.addEventListener("click", () => { const o = a.classList.toggle("open"); b.textContent = o ? "Close it" : "Open it up"; b.setAttribute("aria-expanded", o); });
+  body.append(el("span", "tag", p.tag), el("h3", "", p.title), el("p", "", p.blurb), more, b);
+  const links = p.links || (p.link ? [[p.linkText, p.link]] : []);
+  links.forEach(([t, h]) => { const l = el("a", "link", t); l.href = h; l.target = "_blank"; l.rel = "noopener"; body.append(l); });
+  a.append(art, body); $("#projects").append(a);
+});
+
+/* what-ifs */
+EXPERIMENTS.forEach((x, i) => {
+  const b = el("button", "flip"), inn = el("span", "in"), f = el("span", "face front"), k = el("span", "face back");
+  b.type = "button"; b.setAttribute("aria-expanded", "false");
+  f.style.setProperty("--c", ["var(--marigold)", "var(--pink)", "var(--mint)"][i % 3]);
+  const foot = el("span", "hand"); foot.append(el("span", "", x.tag), el("span", "", "flip me"));
+  f.append(el("strong", "", x.q), foot);
+  const p1 = el("span"), p2 = el("span");
+  p1.append(el("b", "", "What I tried"), x.did); p2.append(el("b", "", "What came of it"), x.got);
+  k.append(p1, p2); k.setAttribute("aria-hidden", "true");
+  inn.append(f, k); b.append(inn);
+  b.addEventListener("click", () => { const o = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", o); k.setAttribute("aria-hidden", !o); f.setAttribute("aria-hidden", o); });
+  $("#ifgrid").append(b);
+});
+
+/* lab log */
+if (LAB_LOG.length) {
+  $("#log").hidden = false;
+  LAB_LOG.forEach(r => {
+    const row = el("div", "row");
+    const v = el("span", "verdict" + (/hype/i.test(r.verdict) ? " hype" : ""), r.verdict);
+    row.append(el("b", "", r.name), el("span", "", r.task), el("span", "", r.result), v); $("#logrows").append(row);
+  });
+}
+
+/* contacts */
+(() => {
+  const c = $("#contacts"), add = (href, text) => { const a = el("a", "btn", text); a.href = href; a.target = "_blank"; a.rel = "noopener"; c.prepend(a); };
+  if (CONTACT.whatsapp) add("https://wa.me/" + CONTACT.whatsapp, "WhatsApp me");
+  if (CONTACT.email) add("mailto:" + CONTACT.email, "Email me");
+  if (CONTACT.linkedin) add(CONTACT.linkedin, "Find me on LinkedIn");
+})();
+
+/* the bench: throwable tools */
+(() => {
+  const bench = $("#bench"), note = bench.querySelector(".note"), chips = [];
+  TOOLS.forEach(t => { const c = el("div", "chip", t); bench.insertBefore(c, note); chips.push({ el: c }); });
+  if (calm) { bench.classList.add("still"); return; }
+  let W = 0, H = 0, flings = 0;
+  const size = () => { W = bench.clientWidth; H = bench.clientHeight; chips.forEach(c => { c.w = c.el.offsetWidth; c.h = c.el.offsetHeight; }); };
+  size(); addEventListener("resize", size);
+  chips.forEach(c => {
+    c.x = Math.random() * Math.max(1, W - c.w); c.y = Math.random() * Math.max(1, H - c.h - 70);
+    const a = Math.random() * 6.28; c.vx = Math.cos(a) * 1.2; c.vy = Math.sin(a) * 1.2; c.drag = false;
+    let lx, ly, lt;
+    c.el.addEventListener("pointerdown", e => { c.drag = true; c.el.setPointerCapture(e.pointerId); lx = e.clientX; ly = e.clientY; lt = performance.now(); c.vx = c.vy = 0; });
+    c.el.addEventListener("pointermove", e => {
+      if (!c.drag) return;
+      const now = performance.now(), dt = Math.max(8, now - lt), dx = e.clientX - lx, dy = e.clientY - ly;
+      c.x += dx; c.y += dy; c.vx = dx / dt * 16; c.vy = dy / dt * 16; lx = e.clientX; ly = e.clientY; lt = now;
+    });
+    const up = () => { if (!c.drag) return; c.drag = false;
+      if (Math.hypot(c.vx, c.vy) > 4) { flings++; $("#flings").textContent = flings === 1 ? "1 throw. That's tinkering." : flings + " throws. That's tinkering."; } };
+    c.el.addEventListener("pointerup", up); c.el.addEventListener("pointercancel", up);
+  });
+  const tick = () => {
+    chips.forEach(c => {
+      if (!c.drag) {
+        c.x += c.vx; c.y += c.vy;
+        const sp = Math.hypot(c.vx, c.vy);
+        if (sp > 1.4) { c.vx *= 0.985; c.vy *= 0.985; } else if (sp < 0.6) { c.vx += (Math.random() - .5) * .2; c.vy += (Math.random() - .5) * .2; }
+      }
+      const mx = Math.max(0, W - c.w), my = Math.max(0, H - c.h);
+      if (c.x < 0) { c.x = 0; c.vx = Math.abs(c.vx); } else if (c.x > mx) { c.x = mx; c.vx = -Math.abs(c.vx); }
+      if (c.y < 0) { c.y = 0; c.vy = Math.abs(c.vy); } else if (c.y > my) { c.y = my; c.vy = -Math.abs(c.vy); }
+      c.el.style.transform = `translate(${c.x}px,${c.y}px) rotate(${c.vx * 2}deg)`;
+    });
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+})();
+
+/* Bablu's rooftop run */
+(() => {
+  const scene = $("#scene"), runner = $("#runner"), hud = $("#hud"), msg = $("#msg");
+  runner.innerHTML = ART.bablu;
+  // skyline: two identical halves so it loops
+  let sky = '<svg viewBox="0 0 1600 150" preserveAspectRatio="none" width="100%" height="100%"><g fill="#0D0B2B">';
+  for (let h = 0; h < 2; h++) [[0,70,90],[100,110,60],[170,50,110],[300,90,70],[380,130,50],[450,60,120],[600,100,80],[700,40,60],[770,120,30]].forEach(([x, hh, w]) => sky += `<rect x="${x + h * 800}" y="${150 - hh}" width="${w}" height="${hh}"/>`);
+  sky += '</g><g fill="#FFC81F">';
+  for (let h = 0; h < 2; h++) [[20,100],[50,115],[190,60],[240,90],[400,40],[470,50],[520,100],[620,70],[790,50]].forEach(([x, y]) => sky += `<rect x="${x + h * 800}" y="${y}" width="8" height="10"/>`);
+  $("#sky").innerHTML = sky + "</g></svg>";
+
+  let state = "idle", y = 0, vy = 0, tanks = [], dist = 0, next = 0, best = 0, last = 0;
+  const reset = () => { tanks.forEach(t => t.el.remove()); tanks = []; y = vy = dist = 0; next = 40; };
+  const jump = () => {
+    if (state !== "playing") { reset(); state = "playing"; scene.classList.add("playing"); msg.textContent = ""; last = performance.now(); requestAnimationFrame(loop); }
+    if (y === 0) vy = 15.5;
+  };
+  const over = () => {
+    state = "over"; scene.classList.remove("playing");
+    const m = Math.floor(dist); best = Math.max(best, m);
+    msg.textContent = `The biryani went cold after ${m} m. Tap to run again.`;
+    $("#best").textContent = `Best run: ${best} m`;
+  };
+  const loop = now => {
+    if (state !== "playing") return;
+    const f = Math.min(2.5, (now - last) / 16.7); last = now;
+    const speed = 6 + dist * 0.012, W = scene.clientWidth;
+    vy -= 0.95 * f; y = Math.max(0, y + vy * f); if (y === 0) vy = 0;
+    runner.style.transform = `translateY(${-y}px)`;
+    dist += speed * f * 0.04; hud.textContent = Math.floor(dist) + " m";
+    next -= f;
+    if (next <= 0) { const t = { el: el("div", "tank"), x: W + 20, h: 34 + Math.random() * 30 }; t.el.style.height = t.h + "px"; scene.append(t.el); tanks.push(t); next = 60 + Math.random() * 55; }
+    tanks = tanks.filter(t => {
+      t.x -= speed * f; t.el.style.transform = `translateX(${t.x}px)`;
+      if (t.x < 60 + 74 - 22 && t.x + 38 > 60 + 22 && y < t.h - 8) over();
+      if (t.x < -60) { t.el.remove(); return false; } return true;
+    });
+    requestAnimationFrame(loop);
+  };
+  scene.addEventListener("pointerdown", e => { e.preventDefault(); scene.focus({ preventScroll: true }); jump(); });
+  scene.addEventListener("keydown", e => { if (e.code === "Space" || e.code === "ArrowUp" || e.code === "Enter") { e.preventDefault(); jump(); } });
+})();
+
+/* scroll road: Bablu runs to Charminar as you read */
+(() => {
+  $("#mini").innerHTML = ART.bablu; $("#goal").innerHTML = ART.charminar("#FFFDF5");
+  const upd = () => {
+    const max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, scrollY / max) : 0;
+    const x = 20 + p * (innerWidth - 80);
+    $("#roadfill").style.width = x + "px"; $("#mini").style.left = x + "px";
+  };
+  addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+})();
+</script>
+</body>
+</html>
