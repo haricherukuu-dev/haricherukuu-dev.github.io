@@ -4,7 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hari Cheruku, AI tinkerer</title>
-<meta name="description" content="Hari Cheruku builds games, shows and tools with AI, without writing code. This is his workbench.">
+<meta name="description" content="Hari Cheruku builds games, shows and tools with AI, without writing code. Play them right on the page.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://haricheruku.in/">
+<meta property="og:title" content="Hari Cheruku, AI tinkerer">
+<meta property="og:description" content="Games, shows and tools I built with AI. Play them right on the page.">
+<meta property="og:image" content="https://haricheruku.in/media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://haricheruku.in/media/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -121,6 +130,105 @@ section{padding:4.5rem 0}
 .stamp{transform-box:fill-box;transform-origin:50% 50%;animation:stamp 2.4s ease-in-out infinite}
 @keyframes stamp{0%,70%,100%{transform:rotate(-14deg) scale(1)}80%{transform:rotate(-14deg) scale(1.35)}}
 
+/* real game */
+.gamebox{position:relative;margin-top:2rem;aspect-ratio:16/9;border:4px solid var(--marigold);border-radius:28px;overflow:hidden;background:#0D0B2B;box-shadow:10px 10px 0 var(--pink)}
+.gamebox img,.gamebox iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;display:block}
+.gamebox .go{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(90deg,rgba(13,11,43,.15),rgba(13,11,43,0) 60%);border:0;cursor:pointer;font:inherit}
+.bigplay{display:inline-flex;align-items:center;gap:.7rem;background:var(--marigold);color:var(--ink);font-weight:800;font-size:clamp(1.3rem,3vw,2rem);padding:.8rem 1.6rem;border:4px solid var(--ink);border-radius:999px;box-shadow:6px 6px 0 var(--ink);transition:transform .15s}
+.go:hover .bigplay{transform:scale(1.06) rotate(-2deg)}
+.bigplay svg{width:1.2em;height:1.2em}
+.gamenote{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.4rem;align-items:center}
+.gamenote a{color:var(--marigold);font-weight:800}
+
+/* pitch button in hero */
+.pitch{display:inline-flex;align-items:center;gap:.6rem;margin:1.6rem 0 0 1rem;font:inherit;font-weight:800;font-size:1.1rem;cursor:pointer;background:var(--pink);color:var(--ink);border:3px solid var(--line);border-radius:999px;padding:.55rem 1.2rem;box-shadow:4px 4px 0 var(--line);vertical-align:middle}
+.pitch svg{width:1.1em;height:1.1em}
+.pitch[hidden]{display:none}
+
+/* this week */
+.week{display:grid;grid-template-columns:1.2fr 1fr;gap:1.6rem;margin-top:2rem;background:var(--paper);color:var(--ink);border:4px solid var(--ink);border-radius:24px;box-shadow:9px 9px 0 var(--ink);padding:1.6rem 1.8rem}
+.week .when{font-weight:600;font-size:1rem}
+.week h3{font-size:clamp(1.9rem,3.6vw,2.8rem);margin:.3rem 0 .8rem}
+.week dl{margin:0;display:grid;gap:.8rem}
+.week dt{font-weight:800}
+.week dd{margin:.1rem 0 0}
+.week .verdict{display:inline-block;margin-top:1rem;font-size:1.1rem}
+.week .side{display:flex;flex-direction:column;gap:1rem;justify-content:center}
+.week .side .tile{aspect-ratio:16/9}
+.week .side .tile img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* industry row */
+.wall2{margin-top:1.4rem}
+.indtext{grid-column:span 2;align-self:center}
+.indtext h3{font-size:clamp(1.6rem,3vw,2.4rem)}
+.indtext p{margin-top:.8rem}
+
+/* call planner demo */
+.planner{margin-top:2rem;display:grid;grid-template-columns:300px 1fr;gap:1.6rem;align-items:start}
+.pcontrols{background:var(--paper);color:var(--ink);border:4px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:1.2rem 1.3rem}
+.pcontrols label{display:block;font-weight:800}
+.pclock{font-weight:800;font-size:2.6rem;line-height:1.1;margin:.3rem 0 .6rem}
+.pcontrols input[type=range]{width:100%;accent-color:var(--pink)}
+.pcontrols p{font-size:.95rem;margin-top:.8rem}
+.pcontrols button{font:inherit;font-weight:800;font-size:.95rem;cursor:pointer;margin-top:1rem;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:.5rem 1rem}
+.queue{list-style:none;margin:0;padding:0;display:grid;gap:.8rem}
+.queue li{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.3rem 1rem;align-items:center;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:18px;padding:.8rem 1rem;box-shadow:4px 4px 0 var(--ink);transition:transform .3s}
+.queue li.first{background:var(--marigold)}
+.queue .rank{font-weight:800;font-size:1.8rem;width:2.2rem;text-align:center}
+.queue .who b{display:block;font-weight:800}
+.queue .who span{font-size:.95rem}
+.queue .why{font-weight:600;font-size:.85rem;padding:.15rem .6rem;border-radius:999px;border:2px solid var(--ink);white-space:nowrap;background:var(--mint)}
+.queue .why.due{background:var(--pink)}
+.queue .rank{grid-row:1/3;align-self:start}
+.queue .why{justify-self:end;align-self:start;width:max-content}
+.queue li{align-content:start}
+.queue .open{grid-column:2/3;grid-row:2;font-family:var(--hand);font-size:1.35rem;line-height:1.15}
+.queue .call{grid-column:3;grid-row:2;justify-self:end;align-self:end}
+@media (max-width:600px){.queue li{grid-template-columns:2rem 1fr}.queue .why{grid-column:2;justify-self:start}.queue .open{grid-column:2;grid-row:auto}.queue .call{grid-column:2;grid-row:auto;justify-self:start}}
+.queue li.later{opacity:.55;box-shadow:none}
+.queue .call{font:inherit;font-weight:800;font-size:.85rem;cursor:pointer;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:.35rem .8rem}
+.qhead{font-weight:800;margin:1rem 0 .4rem}
+.sample{display:inline-block;font-weight:800;font-size:.9rem;background:var(--ink);color:var(--marigold);border-radius:999px;padding:.15rem .7rem;margin-left:.4rem;vertical-align:middle}
+
+/* version 1 game */
+.v1{display:grid;grid-template-columns:minmax(0,380px) 1fr;gap:1.6rem;align-items:center;margin-top:2.4rem;padding-top:2rem;border-top:3px dashed rgba(255,253,245,.25)}
+.v1 .tile{aspect-ratio:16/9;border-color:var(--marigold);box-shadow:7px 7px 0 var(--pink)}
+.v1 .tile img{display:block;width:100%;height:100%;object-fit:cover}
+.v1 h3{font-size:clamp(1.6rem,3vw,2.3rem)}
+.v1 p{margin-top:.6rem}
+
+/* video wall */
+.wall{display:grid;grid-template-columns:repeat(6,1fr);gap:1.4rem;margin-top:2.4rem}
+.tile{position:relative;display:block;padding:0;border:4px solid var(--ink);border-radius:20px;overflow:hidden;background:#000;cursor:pointer;box-shadow:7px 7px 0 var(--ink);font:inherit;color:var(--paper);text-align:left;transition:transform .2s cubic-bezier(.2,1.6,.4,1)}
+.tile:hover,.tile:focus-visible{transform:translateY(-5px) rotate(-.6deg)}
+.tile video{display:block;width:100%;height:100%;object-fit:cover}
+.tile.wide{grid-column:span 3;aspect-ratio:16/9}
+.tile.tall{grid-column:span 1;aspect-ratio:9/16}
+.tile .pb{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--marigold);border:4px solid var(--ink);display:grid;place-items:center;transition:transform .2s}
+.tile.tall .pb{width:48px;height:48px;margin:-24px 0 0 -24px}
+.tile:hover .pb{transform:scale(1.15)}
+.tile .pb svg{width:45%;height:45%;margin-left:8%}
+.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:1.6rem .9rem .7rem;background:linear-gradient(transparent,rgba(13,11,43,.92));font-weight:800;font-size:1.05rem;line-height:1.15}
+.tile .cap small{display:block;font-weight:400;font-size:.9rem;opacity:.85}
+.kevintext{grid-column:span 3;align-self:center}
+.kevintext h3{font-size:clamp(1.8rem,3.4vw,2.8rem)}
+.kevintext p{margin-top:.8rem}
+
+/* player */
+dialog.player{border:0;padding:0;background:transparent;max-width:min(1100px,94vw);width:100%;overflow:visible}
+dialog.player::backdrop{background:rgba(13,11,43,.88);backdrop-filter:blur(4px)}
+dialog.player .frame{border:4px solid var(--marigold);border-radius:22px;overflow:hidden;background:#000}
+dialog.player video{display:block;width:100%;max-height:82vh;background:#000}
+dialog.player.tall{max-width:min(420px,94vw)}
+dialog.player.game{max-width:96vw;width:96vw}
+dialog.player iframe{display:block;width:100%;height:84vh;border:0}
+dialog.player .close{position:absolute;right:0;top:-54px;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;background:var(--marigold);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:.45rem 1rem}
+dialog.player .ttl{color:var(--paper);font-weight:800;font-size:1.2rem;position:absolute;left:4px;top:-46px;right:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+dialog.player[open]{margin-top:72px}
+.proj .watch{display:inline-flex;align-items:center;gap:.4rem;margin:1rem 0 0 .5rem;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;background:var(--marigold);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:.4rem 1rem}
+.why h3{font-size:1.5rem;margin:0}
+.why p{margin-top:.4rem}
+
 /* what-ifs */
 .ifs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.4rem}
 .flip{perspective:1400px;background:none;border:0;padding:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer;display:block;width:100%}
@@ -172,6 +280,15 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr}.bench{min-height:340px}
   .grid,.steps,.why,.ifs{grid-template-columns:1fr}
+  .wall{grid-template-columns:repeat(3,1fr);gap:1rem}
+  .tile.wide{grid-column:span 3}.tile.tall{grid-column:span 1}.kevintext{grid-column:span 3}
+  .tile .cap{font-size:.95rem}.tile.tall .cap small{display:none}.tile.tall .cap{font-size:.85rem;padding:1.2rem .5rem .5rem}
+  .gamebox{aspect-ratio:4/3}
+  .v1{grid-template-columns:1fr}
+  .week,.planner{grid-template-columns:1fr}
+  .indtext{grid-column:span 3}
+  .wall2 .tile.tall{grid-column:span 1}
+  .pitch{margin-left:0}
   .proj,.steps li:nth-child(n){transform:none}
   .log .row{grid-template-columns:1fr}
   .scene{height:260px}
@@ -191,6 +308,7 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
       <h1 id="headline">New AI tool dropped. I'm already poking it.</h1>
       <p class="intro">I'm Hari. I sell AI programs at Outskill by day and build things with AI the rest of the time. I don't write code. I ship anyway.</p>
       <div class="clock" aria-label="The clock is stuck at 2 AM">02<i>:</i>00 AM <small>still testing</small></div>
+      <button class="pitch" id="pitch" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Watch my 90-second pitch</button>
     </div>
     <div class="bench" id="bench" aria-label="Tools I have put to work. Drag and throw them.">
       <div class="note"><span class="hand">Go on, throw them around.<br>Every one of these has done real work for me.</span><span class="hand" id="flings" aria-live="polite"></span></div>
@@ -201,23 +319,51 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
 <div class="ticker" aria-hidden="true"><div id="tick"></div></div>
 
 <main>
+  <section class="band-cobalt" id="thisweek" hidden>
+    <div class="wrap">
+      <h2>This week's experiment</h2>
+      <div class="week" id="weekcard"></div>
+    </div>
+  </section>
+
   <section class="band-night" id="run">
     <div class="wrap">
-      <div class="run-head">
-        <div>
-          <h2>Meet Bablu. His biryani is getting cold.</h2>
-          <p class="lede">He's the hero of Chalo Upar, the game I'm building. This is a ten-second taste of it; the real game is bigger.</p>
-        </div>
-        <span class="hand" id="best"></span>
+      <h2>Meet Bablu. His biryani is getting cold.</h2>
+      <p class="lede">This is Chalo Upar, the real game, built with Claude. Hit play and run it right here.</p>
+      <div class="gamebox" id="gamebox">
+        <img src="media/chalo-upar.jpg" alt="Chalo Upar start screen: Bablu in a red helmet holding a biryani pot on a rooftop above Hyderabad traffic">
+        <button class="go" id="gamego" type="button" aria-label="Play Chalo Upar here"><span class="bigplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Play Chalo Upar</span></button>
       </div>
-      <div class="scene" id="scene" tabindex="0" role="button" aria-label="Mini game. Press space or tap to make Bablu jump over the water tanks.">
-        <div class="moon"></div>
-        <div class="sky" id="sky"></div>
-        <div class="roof"></div>
-        <div class="cars"></div>
-        <div class="runner" id="runner"></div>
-        <div class="hud" id="hud"></div>
-        <div class="msg"><span class="hand" id="msg">Tap, or press space, to make Bablu jump.</span></div>
+      <div class="gamenote"><span class="hand">Laptop: arrow keys and space. Phone: swipe.</span><a href="chalo-upar/index.html" target="_blank" rel="noopener">Open it full screen</a></div>
+      <div class="v1">
+        <button class="tile" id="roadgo" type="button" aria-label="Play version 1, the flying roadster">
+          <img src="media/roadster.jpg" alt="Version 1: a red roadster flying over a Hyderabad traffic jam at dusk">
+          <span class="pb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#14123A"/></svg></span>
+        </button>
+        <div>
+          <h3>Version 1: the flying roadster</h3>
+          <p>Where Chalo Upar started. Fly a red roadster over the jam from Hitech City to Charminar while a cloned Kevin voice calls the run.</p>
+          <p class="hand">Laptop: A/D to steer, arrows to climb. Phone: drag to fly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-pink" id="watch">
+    <div class="wrap">
+      <h2>Press play</h2>
+      <p class="lede">Videos I made with AI and open-source tools. Tap any of them to watch it right here.</p>
+      <div class="wall" id="wall">
+        <div class="kevintext" id="kevintext">
+          <h3>Kevin v2.5</h3>
+          <p>A Hinglish sitcom about a boyfriend who talks like a chatbot. Animation, voices and edit, all made with AI.</p>
+        </div>
+      </div>
+      <div class="wall wall2" id="wall2">
+        <div class="indtext">
+          <h3>One video for every industry</h3>
+          <p>Leads ask "what would I build?" So I made a one-minute answer for each field, with Gemini Notebook.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -238,15 +384,25 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
     </div>
   </section>
 
-  <section class="band-pink" id="method">
+
+  <section class="band-night" id="planner">
     <div class="wrap">
-      <h2>How I turn a launch into something people can use</h2>
-      <p class="lede">The same three moves every time I explain a new tool to someone who isn't an engineer.</p>
-      <ol class="steps">
-        <li><h3>What happened</h3><p>The launch in plain words. No benchmarks unless they change what you can do on Monday.</p></li>
-        <li><h3>Why it matters</h3><p>Who it helps and how: a sales rep, an ops lead, a shop owner, someone switching careers.</p></li>
-        <li><h3>One thing to try this week</h3><p>A single task you can copy. If I couldn't get it working myself, it doesn't go in.</p></li>
-      </ol>
+      <h2>Try my call planner</h2>
+      <p class="lede">The tool that plans my sales day, running on made-up leads. Drag the clock and watch the queue reorder itself. <span class="sample">Sample data</span></p>
+      <div class="planner">
+        <div class="pcontrols">
+          <label for="ptime">Time of day</label>
+          <div class="pclock" id="pclock">11:00 AM</div>
+          <input type="range" id="ptime" min="660" max="1200" step="15" value="660" aria-describedby="prules">
+          <p id="prules">Promised callbacks come first, at their time. Then people who stayed for the pitch, then everyone else, ranked by minutes in the workshop.</p>
+          <button type="button" id="preset">Bring everyone back</button>
+        </div>
+        <div>
+          <ol class="queue" id="pnow" aria-live="polite"></ol>
+          <div class="qhead" id="platerhead">Later today</div>
+          <ol class="queue" id="plater"></ol>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -260,11 +416,11 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
 
   <section class="band-cobalt" id="why">
     <div class="wrap">
-      <h2>Why I'd be good at tinkering for a living</h2>
+      <h2>Why me</h2>
       <div class="why">
-        <div><h3>I hear the questions first</h3><p>Every day I'm on calls with professionals in India, the US and Canada who want to use AI. I know what confuses them, and what makes them say "wait, it can do that?"</p></div>
-        <div><h3>I am the audience</h3><p>I'm not an engineer. If I can get a tool to do something useful, the people watching can too. If I can't, that's worth saying out loud.</p></div>
-        <div><h3>I finish things</h3><p>Everything on this page started as a late-night "what if" and ended as something another person could play, watch or use.</p></div>
+        <div><h3>I'm the audience.</h3><p>Not an engineer. If I can make a tool work, so can the people watching.</p></div>
+        <div><h3>I talk to learners daily.</h3><p>I know what confuses them and what makes them say "wait, it can do that?"</p></div>
+        <div><h3>I ship.</h3><p>Everything on this page started as a late-night "what if" and ended as something you can play or watch.</p></div>
       </div>
     </div>
   </section>
@@ -276,6 +432,12 @@ footer h2{max-width:none;font-size:clamp(2.6rem,8vw,6rem)}
     <div class="contacts" id="contacts"><span class="hand">I'm already on the team. Find me on Slack as Hari Cheruku.</span></div>
   </div>
 </footer>
+
+<dialog class="player" id="player" aria-label="Media player">
+  <span class="ttl" id="ptitle"></span>
+  <button class="close" id="pclose" type="button">Close</button>
+  <div class="frame" id="pframe"></div>
+</dialog>
 
 <div class="road" aria-hidden="true"><i id="roadfill"></i><div class="goal" id="goal"></div><div class="mini" id="mini"></div></div>
 
@@ -292,20 +454,21 @@ const PROJECTS = [
    blurb:"Two short videos for Outskill's AI Accelerator: a brochure explainer the sales team could send to leads, and a 75-second promo. Script, voice, animation and music all came from AI.",
    made:"Claude Code driving GitHub repos: HyperFrames and Lemo-Opuscar for the animation, VoiceStudio for an AI voice that runs free on my Mac.",
    status:"Shared with the team for feedback. I also wrote a setup guide so colleagues can make their own.",
-   links:[["Watch the 75-second promo","https://growthschoolio.slack.com/files/U0BVCRP44NA/F0C90LWBPEY/aiap_video_2.mp4"],
-          ["Watch the brochure explainer","https://growthschoolio.slack.com/files/U0BVCRP44NA/F0C7FJ8HSSG/aiap_video.mp4"]]},
+   play:{type:"video", src:"media/accelerator-promo.mp4", poster:"media/accelerator-promo.jpg", title:"AI Accelerator promo", shape:"wide"}},
   {tag:"Game", c:"var(--pink)", title:"Chalo Upar: Bablu's Biryani Run", art:"bablu",
    blurb:"Bablu, a 19-year-old delivery boy, runs across the rooftops of a Hyderabad traffic jam. The biryani has to arrive hot.",
    made:"Claude for the whole build, plus an AI-cloned voice for the Dakhni commentary.",
-   status:"First zone (Hi-Tech City) is playable. Colleagues are play-testing it.", link:"", linkText:"Play it"},
+   status:"First zone (Hi-Tech City) is playable. Colleagues are play-testing it.",
+   play:{type:"game", src:"chalo-upar/index.html", title:"Chalo Upar: Bablu's Biryani Run"}},
   {tag:"Sitcom", c:"var(--mint)", title:"Kevin v2.5", art:"kevin",
    blurb:"A Hinglish sitcom on Instagram about a couple where one partner talks like a chatbot.",
    made:"AI video for the episodes and a cloned voice for Kevin.",
-   status:"Episodes go out as Reels on @kevin_v2.5.", link:"", linkText:"Watch an episode"},
-  {tag:"Animated series", c:"var(--marigold)", title:"Breath Aware", art:"sheru",
+   status:"Six episodes made so far, posted as Reels on @kevin_v2.5.",
+   play:{type:"video", src:"media/kevin-ep1.mp4", poster:"media/kevin-ep1.jpg", title:"Kevin v2.5, Episode 1: The Apology", shape:"tall"}},
+  {tag:"Ongoing series", c:"var(--marigold)", title:"Breath Aware", art:"sheru",
    blurb:"A 3D-animated animal-safety series for a rescue home in Hyderabad. Episode one, The Chase, runs 50 seconds in Telugu with English subtitles.",
    made:"Google Flow with Gemini Omni Flash, with saved character references so the kids and the dog look the same in every shot.",
-   status:"Built one clip at a time. When a clip fails I fix the one thing that broke instead of rewriting the prompt.", link:"", linkText:"Watch it"},
+   status:"In production. Episode one is being generated one clip at a time; when a clip fails I fix the one thing that broke instead of rewriting the prompt.", link:"", linkText:"Watch it"},
   {tag:"Office tool", c:"var(--mint)", title:"Invoice and PO maker", art:"invoice",
    blurb:"An offline app for a friend's engineering company that ran on Excel. A purchase order needs only a few inputs and backs up to Google Drive.",
    made:"Claude, start to finish. I described the paperwork; it wrote the app.",
@@ -315,6 +478,40 @@ const PROJECTS = [
    made:"Planned on free tools only, which is its own experiment.",
    status:"In development, and in conversation with the author.", link:"", linkText:"See it"}
 ];
+const GAME = {src:"chalo-upar/index.html", title:"Chalo Upar: Bablu's Biryani Run"};
+const ROADSTER = {src:"roadster/index.html", title:"Chalo Upar, version 1: the flying roadster"};
+const VIDEOS = [            // shape: "wide" (16:9) or "tall" (9:16)
+  {src:"media/accelerator-promo.mp4", poster:"media/accelerator-promo.jpg", title:"AI Accelerator promo", note:"75 sec. Script, voice, animation and music, all AI", shape:"wide"},
+  {src:"media/brochure-explainer.mp4", poster:"media/brochure-explainer.jpg", title:"Brochure explainer", note:"54 sec. Sent to leads in place of a PDF", shape:"wide"},
+  {src:"media/kevin-ep1.mp4", poster:"media/kevin-ep1.jpg", title:"Ep 1: The Apology", shape:"tall"},
+  {src:"media/kevin-ep2.mp4", poster:"media/kevin-ep2.jpg", title:"Ep 2", shape:"tall"},
+  {src:"media/kevin-ep3.mp4", poster:"media/kevin-ep3.jpg", title:"Ep 3", shape:"tall"},
+  {src:"media/ind-pharma.mp4", poster:"media/ind-pharma.jpg", title:"Pharma", shape:"tall", group:"industry"},
+  {src:"media/ind-manufacturing.mp4", poster:"media/ind-manufacturing.jpg", title:"Manufacturing", shape:"tall", group:"industry"},
+  {src:"media/ind-engineers.mp4", poster:"media/ind-engineers.jpg", title:"Engineers", shape:"tall", group:"industry"},
+  {src:"media/ind-investors.mp4", poster:"media/ind-investors.jpg", title:"Investors", shape:"tall", group:"industry"}
+];
+
+/* Your 90-second pitch video. Leave src empty and the button stays hidden.
+   Example: {src:"media/pitch.mp4", poster:"media/pitch.jpg", shape:"wide"} */
+const PITCH_VIDEO = {src:"", poster:"", shape:"wide"};
+
+/* This week's experiment. Leave tool empty and the section stays hidden.
+   video is optional: {src:"media/week.mp4", poster:"media/week.jpg", shape:"wide"} */
+const THIS_WEEK = {
+  when:"", tool:"", tried:"", worked:"", broke:"", verdict:"", video:null
+};
+
+/* Made-up leads for the call planner demo. callback = minutes after midnight (16:30 = 990), or null. */
+const SAMPLE_LEADS = [
+  {name:"Ananya (sample)", role:"HR manager, Pune", minutes:174, pitch:true, callback:null, opener:"You asked about automating onboarding. I've got two ideas for you."},
+  {name:"Rohit (sample)", role:"Ops lead, logistics", minutes:96, pitch:false, callback:780, opener:"Calling at 1, like I promised. Did you get a chance to see the brochure?"},
+  {name:"Meera (sample)", role:"Shop owner, Hyderabad", minutes:201, pitch:true, callback:null, opener:"You stayed till the very end. What stopped you from signing up that night?"},
+  {name:"Sameer (sample)", role:"Sales manager, Bengaluru", minutes:58, pitch:false, callback:null, opener:"Quick one: did the workshop answer your question about sales follow-ups?"},
+  {name:"Kavya (sample)", role:"Career switcher", minutes:140, pitch:true, callback:990, opener:"4:30, as promised. Shall we look at the payment plan together?"},
+  {name:"Arjun (sample)", role:"Pharma field manager", minutes:122, pitch:false, callback:null, opener:"I made a one-minute video for pharma teams. Can I send it over?"}
+];
+
 const EXPERIMENTS = [        // q: the thought, did: what I tried, got: what came of it, tag: "In use" or "In progress"
   {q:"What if my call list planned my day for me?",
    did:"Had Claude read every open lead in our CRM and rank them: promised follow-ups at their exact time, then people who stayed for the pitch, then by minutes spent in the workshop.",
@@ -344,6 +541,10 @@ const LAB_LOG = [            // add rows and the Lab log section appears
 
 
 
+
+
+
+
 /* ============ END EDIT ============ */
 
 const $ = s => document.querySelector(s);
@@ -355,15 +556,15 @@ const K = 'stroke="#14123A" stroke-width="4" stroke-linecap="round" stroke-linej
 const ART = {
   bablu: `<svg viewBox="0 0 120 134" aria-hidden="true">
     <path class="steam" d="M28 40q-5-7 0-13M40 40q-5-7 0-13" fill="none" stroke="#FFFDF5" stroke-width="4" stroke-linecap="round"/>
-    <line class="legB" x1="60" y1="90" x2="60" y2="126" stroke="#14123A" stroke-width="11" stroke-linecap="round"/>
-    <rect x="16" y="46" width="36" height="40" rx="7" fill="#FFC81F" ${K}/>
-    <path d="M24 58h20M24 68h20" ${K} fill="none"/>
-    <line class="legA" x1="64" y1="90" x2="64" y2="126" stroke="#2437FF" stroke-width="11" stroke-linecap="round"/>
-    <rect x="44" y="50" width="36" height="44" rx="13" fill="#FF4FA3" ${K}/>
+    <line class="legB" x1="60" y1="90" x2="60" y2="126" stroke="#5E7286" stroke-width="11" stroke-linecap="round"/>
+    <ellipse cx="32" cy="68" rx="18" ry="16" fill="#D9822B" ${K}/>
+    <path d="M18 58h28" ${K} fill="none"/>
+    <line class="legA" x1="64" y1="90" x2="64" y2="126" stroke="#7C93A8" stroke-width="11" stroke-linecap="round"/>
+    <rect x="44" y="50" width="36" height="44" rx="13" fill="#D9362B" ${K}/>
     <line class="armA" x1="62" y1="62" x2="62" y2="86" stroke="#B9743F" stroke-width="9" stroke-linecap="round"/>
     <circle cx="66" cy="30" r="19" fill="#B9743F" ${K}/>
-    <path d="M47 28a19 19 0 0 1 38 0z" fill="#2437FF" ${K}/>
-    <rect x="80" y="23" width="20" height="7" rx="3.5" fill="#2437FF" ${K}/>
+    <path d="M47 28a19 19 0 0 1 38 0z" fill="#E33B2E" ${K}/>
+    <rect x="80" y="23" width="20" height="7" rx="3.5" fill="#E33B2E" ${K}/>
     <circle cx="75" cy="34" r="2.8" fill="#14123A"/>
     <path d="M70 41q6 5 11 0" fill="none" ${K}/>
   </svg>`,
@@ -448,12 +649,14 @@ PROJECTS.forEach((p, i) => {
   const b = el("button", "", "Open it up"); b.setAttribute("aria-expanded", "false");
   b.addEventListener("click", () => { const o = a.classList.toggle("open"); b.textContent = o ? "Close it" : "Open it up"; b.setAttribute("aria-expanded", o); });
   body.append(el("span", "tag", p.tag), el("h3", "", p.title), el("p", "", p.blurb), more, b);
+  if (p.play) { const w = el("button", "watch", p.play.type === "game" ? "Play it" : "Watch it"); w.type = "button";
+    w.addEventListener("click", () => openPlayer(p.play)); body.append(w); }
   const links = p.links || (p.link ? [[p.linkText, p.link]] : []);
   links.forEach(([t, h]) => { const l = el("a", "link", t); l.href = h; l.target = "_blank"; l.rel = "noopener"; body.append(l); });
   a.append(art, body); $("#projects").append(a);
 });
 
-/* what-ifs */
+/* what-if cards */
 EXPERIMENTS.forEach((x, i) => {
   const b = el("button", "flip"), inn = el("span", "in"), f = el("span", "face front"), k = el("span", "face back");
   b.type = "button"; b.setAttribute("aria-expanded", "false");
@@ -525,48 +728,93 @@ if (LAB_LOG.length) {
   requestAnimationFrame(tick);
 })();
 
-/* Bablu's rooftop run */
-(() => {
-  const scene = $("#scene"), runner = $("#runner"), hud = $("#hud"), msg = $("#msg");
-  runner.innerHTML = ART.bablu;
-  // skyline: two identical halves so it loops
-  let sky = '<svg viewBox="0 0 1600 150" preserveAspectRatio="none" width="100%" height="100%"><g fill="#0D0B2B">';
-  for (let h = 0; h < 2; h++) [[0,70,90],[100,110,60],[170,50,110],[300,90,70],[380,130,50],[450,60,120],[600,100,80],[700,40,60],[770,120,30]].forEach(([x, hh, w]) => sky += `<rect x="${x + h * 800}" y="${150 - hh}" width="${w}" height="${hh}"/>`);
-  sky += '</g><g fill="#FFC81F">';
-  for (let h = 0; h < 2; h++) [[20,100],[50,115],[190,60],[240,90],[400,40],[470,50],[520,100],[620,70],[790,50]].forEach(([x, y]) => sky += `<rect x="${x + h * 800}" y="${y}" width="8" height="10"/>`);
-  $("#sky").innerHTML = sky + "</g></svg>";
+/* player: videos and the game in a pop-up */
+const player = $("#player"), pframe = $("#pframe");
+const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#14123A"/></svg>';
+function openPlayer(m) {
+  pframe.innerHTML = ""; player.className = "player " + (m.type === "game" ? "game" : (m.shape || "wide"));
+  $("#ptitle").textContent = m.title || "";
+  if (m.type === "game") { const f = el("iframe"); f.src = m.src; f.title = m.title; f.allow = "autoplay; fullscreen"; pframe.append(f); }
+  else { const v = el("video"); v.src = m.src; v.poster = m.poster; v.controls = true; v.autoplay = true; v.playsInline = true; pframe.append(v); }
+  if (player.showModal) player.showModal(); else player.setAttribute("open", "");
+}
+const closePlayer = () => { pframe.innerHTML = ""; if (player.close) player.close(); else player.removeAttribute("open"); };
+$("#pclose").addEventListener("click", closePlayer);
+player.addEventListener("close", () => { pframe.innerHTML = ""; });
+player.addEventListener("click", e => { if (e.target === player) closePlayer(); });
 
-  let state = "idle", y = 0, vy = 0, tanks = [], dist = 0, next = 0, best = 0, last = 0;
-  const reset = () => { tanks.forEach(t => t.el.remove()); tanks = []; y = vy = dist = 0; next = 40; };
-  const jump = () => {
-    if (state !== "playing") { reset(); state = "playing"; scene.classList.add("playing"); msg.textContent = ""; last = performance.now(); requestAnimationFrame(loop); }
-    if (y === 0) vy = 15.5;
+/* the real game: inline on big screens, pop-up on phones */
+$("#gamego").addEventListener("click", () => {
+  if (innerWidth < 900) { openPlayer({ type: "game", src: GAME.src, title: GAME.title }); return; }
+  const f = el("iframe"); f.src = GAME.src; f.title = GAME.title; f.allow = "autoplay; fullscreen";
+  $("#gamebox").replaceChildren(f); f.focus();
+});
+
+/* pitch video in the hero */
+if (PITCH_VIDEO.src) { const pb = $("#pitch"); pb.hidden = false; pb.addEventListener("click", () => openPlayer({ ...PITCH_VIDEO, type: "video", title: "My 90-second pitch" })); }
+
+/* this week's experiment */
+if (THIS_WEEK.tool) {
+  $("#thisweek").hidden = false;
+  const w = $("#weekcard"), main = el("div"), dl = el("dl");
+  main.append(el("span", "when", THIS_WEEK.when), el("h3", "", THIS_WEEK.tool));
+  [["What I tried", THIS_WEEK.tried], ["What worked", THIS_WEEK.worked], ["Where it broke", THIS_WEEK.broke]].forEach(([k, v]) => { if (v) dl.append(el("dt", "", k), el("dd", "", v)); });
+  main.append(dl);
+  if (THIS_WEEK.verdict) main.append(el("span", "verdict" + (/hype/i.test(THIS_WEEK.verdict) ? " hype" : ""), THIS_WEEK.verdict));
+  w.append(main);
+  if (THIS_WEEK.video) {
+    const side = el("div", "side"), b = el("button", "tile wide"); b.type = "button";
+    const img = el("img"); img.src = THIS_WEEK.video.poster; img.alt = "";
+    const pb = el("span", "pb"); pb.innerHTML = PLAY;
+    b.append(img, pb, el("span", "cap", "Watch the test"));
+    b.addEventListener("click", () => openPlayer({ ...THIS_WEEK.video, type: "video", title: THIS_WEEK.tool }));
+    side.append(b); w.append(side);
+  }
+}
+
+/* call planner demo */
+(() => {
+  const range = $("#ptime"), clock = $("#pclock");
+  let done = new Set();
+  const fmt = m => { let h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return h + ":" + String(mm).padStart(2, "0") + " " + ap; };
+  const draw = () => {
+    const now = +range.value; clock.textContent = fmt(now);
+    const live = SAMPLE_LEADS.filter(l => !done.has(l.name));
+    const due = live.filter(l => l.callback != null && l.callback <= now).sort((a, b) => a.callback - b.callback);
+    const later = live.filter(l => l.callback != null && l.callback > now).sort((a, b) => a.callback - b.callback);
+    const rest = live.filter(l => l.callback == null).sort((a, b) => (b.pitch - a.pitch) || (b.minutes - a.minutes));
+    const card = (l, i, isLater) => {
+      const li = el("li", isLater ? "later" : (i === 0 ? "first" : ""));
+      const who = el("span", "who"); who.append(el("b", "", l.name), el("span", "", l.role + " · " + l.minutes + " min in the workshop"));
+      const why = l.callback != null ? el("span", "why due", (isLater ? "Call at " : "Promised ") + fmt(l.callback)) : el("span", "why", l.pitch ? "Stayed for the pitch" : "Workshop only");
+      li.append(el("span", "rank", isLater ? "·" : String(i + 1)), who, why, el("span", "open", "“" + l.opener + "”"));
+      if (!isLater) { const c = el("button", "call", "Mark called"); c.type = "button"; c.addEventListener("click", () => { done.add(l.name); draw(); }); li.append(c); }
+      return li;
+    };
+    $("#pnow").replaceChildren(...[...due, ...rest].map((l, i) => card(l, i, false)));
+    $("#plater").replaceChildren(...later.map(l => card(l, 0, true)));
+    $("#platerhead").hidden = later.length === 0;
+    if (!due.length && !rest.length) $("#pnow").replaceChildren(el("li", "", "Queue cleared. Time for chai."));
   };
-  const over = () => {
-    state = "over"; scene.classList.remove("playing");
-    const m = Math.floor(dist); best = Math.max(best, m);
-    msg.textContent = `The biryani went cold after ${m} m. Tap to run again.`;
-    $("#best").textContent = `Best run: ${best} m`;
-  };
-  const loop = now => {
-    if (state !== "playing") return;
-    const f = Math.min(2.5, (now - last) / 16.7); last = now;
-    const speed = 6 + dist * 0.012, W = scene.clientWidth;
-    vy -= 0.95 * f; y = Math.max(0, y + vy * f); if (y === 0) vy = 0;
-    runner.style.transform = `translateY(${-y}px)`;
-    dist += speed * f * 0.04; hud.textContent = Math.floor(dist) + " m";
-    next -= f;
-    if (next <= 0) { const t = { el: el("div", "tank"), x: W + 20, h: 34 + Math.random() * 30 }; t.el.style.height = t.h + "px"; scene.append(t.el); tanks.push(t); next = 60 + Math.random() * 55; }
-    tanks = tanks.filter(t => {
-      t.x -= speed * f; t.el.style.transform = `translateX(${t.x}px)`;
-      if (t.x < 60 + 74 - 22 && t.x + 38 > 60 + 22 && y < t.h - 8) over();
-      if (t.x < -60) { t.el.remove(); return false; } return true;
-    });
-    requestAnimationFrame(loop);
-  };
-  scene.addEventListener("pointerdown", e => { e.preventDefault(); scene.focus({ preventScroll: true }); jump(); });
-  scene.addEventListener("keydown", e => { if (e.code === "Space" || e.code === "ArrowUp" || e.code === "Enter") { e.preventDefault(); jump(); } });
+  range.addEventListener("input", draw);
+  $("#preset").addEventListener("click", () => { done = new Set(); draw(); });
+  draw();
 })();
+
+$("#roadgo").addEventListener("click", () => openPlayer({ type: "game", src: ROADSTER.src, title: ROADSTER.title }));
+
+/* video wall */
+VIDEOS.forEach(m => {
+  const b = el("button", "tile " + m.shape); b.type = "button"; b.setAttribute("aria-label", "Play " + m.title);
+  const v = el("video"); v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none"; v.poster = m.poster; v.src = m.src; v.setAttribute("aria-hidden", "true");
+  const pb = el("span", "pb"); pb.innerHTML = PLAY;
+  const cap = el("span", "cap", m.title); if (m.note) cap.append(el("small", "", m.note));
+  b.append(v, pb, cap);
+  if (!calm) { b.addEventListener("mouseenter", () => { v.play().catch(() => {}); }); b.addEventListener("mouseleave", () => { v.pause(); }); }
+  b.addEventListener("click", () => { v.pause(); openPlayer(m); });
+  if (m.group === "industry") $("#wall2").append(b);
+  else if (m.shape === "tall") $("#wall").append(b); else $("#wall").insertBefore(b, $("#kevintext"));
+});
 
 /* scroll road: Bablu runs to Charminar as you read */
 (() => {
